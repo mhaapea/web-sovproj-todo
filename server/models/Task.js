@@ -9,6 +9,7 @@ const insertTask = async (description) => {
 }
 
 const deleteTask = async (id) => {
-    return await pool.query('delete from task WHERE id = $1', [id])
+    return await pool.query('DELETE from task WHERE id = $1', [id])
 }
+
 export { selectAllTasks, insertTask, deleteTask }
