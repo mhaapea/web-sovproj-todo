@@ -4,10 +4,10 @@ import { pool }from './db.js'
 import { hash } from 'bcrypt'
 import jwt from 'jsonwebtoken'
 
-const _dirname = import.meta.dirname
+const __dirname = import.meta.dirname
 
 const initializeTestDb = async() => {
-    const sql = await fs.readFile(path.resolve(_dirname, '../db.sql'), 'utf8')
+    const sql = await fs.readFile(path.resolve(__dirname, '../db.sql'), 'utf8')
     await pool.query(sql)
 }
 

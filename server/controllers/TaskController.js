@@ -14,21 +14,29 @@ const getTasks = async(req, res, next) => {
 
 const createTask = async (req, res, next) => {
     const { task } = req.body
-    console.log("Task to create: ", task)
+    console.log("Task to create:", task)
     try {
         if (!task || !task.description || task.description.trim().length === 0) {
             return next(new ApiError('Task description is required', 400))
-            /*
-            error.status = 400
-            return next(error)
-            const error = new Error('Task description is required')
-            */
         }
-        const result = await insertTask(description)
+        const result = await insertTask(task.description)
         return res.status(201).json(result.rows[0])
     } catch (error) {
         return next(error)
     }
+   /*try {
+        const description = req.body.task?.description?.trim()
+        if (!description) {
+            return next(new ApiError('Task description is required', 400))
+            const error = new Error('Task description is required')
+            error.status = 400
+            return next(error)
+    }
+    const result = await insertTask(description)
+    return res.status(201).json(result.rows[0])
+    } catch (error) {
+        return next(error)
+    }*/
 }
 
 const removeTask = async (req, res, next) => {

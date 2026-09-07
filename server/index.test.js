@@ -5,7 +5,8 @@ import { getToken } from './helper/test.js'
 
 describe("Testing basic database functionality", () => {
     let token = null
-    const testUser = {email: "foo@foo.com", password: "password123"}
+    const testUser = { email: "foo@foo.com", password: "password123" }
+
 before(async () => {
 await initializeTestDb()
     token = getToken(testUser.email)
@@ -14,6 +15,7 @@ await initializeTestDb()
     it("should get all tasks", async() => {
         const response = await fetch("http://localhost:3001/tasks")
         const data = await response.json()
+        expect(response.status).to.equal(200)
         expect(data).to.be.an("array").that.is.not.empty
         expect(data[0]).to.include.all.keys(["id", "description"])
     })
@@ -24,7 +26,7 @@ await initializeTestDb()
             method: "post",
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`
+                Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify({ task: newTask })
         })
@@ -33,7 +35,8 @@ await initializeTestDb()
         expect(data).to.include.all.keys(["id", "description"])
         expect(data.description).to.equal(newTask.description)
     })
-
+    
+    
     it("should not create a new task without description", async() => {
         const response = await fetch("http://localhost:3001/tasks", {
             method: "post",
@@ -47,7 +50,7 @@ await initializeTestDb()
         expect(response.status).to.equal(400)
         expect(data).to.include.all.keys("error")
     })
-
+    
     it("should delete task", async() => {
         const before = await fetch("http://localhost:3001/tasks")
         const beforeData = await before.json()
@@ -61,7 +64,7 @@ await initializeTestDb()
         expect(response.status).to.equal(200)
         expect(data).to.include.all.keys("id")
     })
-
+    
 })
 
 describe("Testing user management", () => {
